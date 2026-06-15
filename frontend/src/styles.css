@@ -1,0 +1,276 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "DM Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-bg-canvas: var(--bg-canvas);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-2: var(--bg-surface-2);
+  --color-bg-panel: var(--bg-panel);
+  --color-bg-panel-2: var(--bg-panel-2);
+  --color-bg-panel-hover: var(--bg-panel-hover);
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-muted: var(--brand-red-muted);
+  --color-state-critical: var(--state-critical);
+  --color-state-high: var(--state-high);
+  --color-state-medium: var(--state-medium);
+  --color-state-low: var(--state-low);
+  --color-state-info: var(--state-info);
+  --color-state-offline: var(--state-offline);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-text-on-dark-muted: var(--text-on-dark-muted);
+  --color-border-light: var(--border-light);
+  --color-border-medium: var(--border-medium);
+  --color-border-panel: var(--border-panel);
+
+  /* shadcn aliases */
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--bg-surface);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--brand-red);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--bg-surface-2);
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--bg-surface-2);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--bg-surface-2);
+  --color-accent-foreground: var(--text-primary);
+  --color-destructive: var(--brand-red);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--border-light);
+  --color-input: var(--border-light);
+  --color-ring: var(--brand-red);
+  --color-ring-offset-background: var(--bg-canvas);
+  --color-chart-1: var(--brand-red);
+  --color-chart-2: var(--state-high);
+  --color-chart-3: var(--state-medium);
+  --color-chart-4: var(--state-low);
+  --color-chart-5: var(--state-info);
+  --color-sidebar: var(--bg-panel);
+  --color-sidebar-foreground: var(--text-on-dark);
+  --color-sidebar-primary: var(--brand-red);
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: var(--bg-panel-hover);
+  --color-sidebar-accent-foreground: var(--text-on-dark);
+  --color-sidebar-border: var(--border-panel);
+  --color-sidebar-ring: var(--brand-red);
+}
+
+:root {
+  --radius: 6px;
+  --bg-canvas: #f3f4f6;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f9fafb;
+  --bg-panel: #1c2333;
+  --bg-panel-2: #243044;
+  --bg-panel-hover: #2d3a52;
+  --brand-red: #e1261c;
+  --brand-red-muted: #fee2e2;
+  --state-critical: #e1261c;
+  --state-high: #ea580c;
+  --state-medium: #d97706;
+  --state-low: #16a34a;
+  --state-info: #2563eb;
+  --state-offline: #6b7280;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-on-dark: #f9fafb;
+  --text-on-dark-muted: #9ca3af;
+  --border-light: #e5e7eb;
+  --border-medium: #d1d5db;
+  --border-panel: #2d3a52;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html, body {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4, .font-display { font-family: "DM Sans", sans-serif; }
+  .font-mono { font-family: "IBM Plex Mono", monospace; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-10%); }
+  100% { transform: translateY(110%); }
+}
+.scanline {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.scanline::before {
+  content: ""; position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  opacity: 0.12; animation: scanline 3s linear infinite;
+}
+
+@keyframes bbox-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.bbox-pulse { animation: bbox-pulse 2s ease-in-out infinite; }
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker { animation: ticker 40s linear infinite; }
+
+@keyframes slide-down-fade {
+  0% { transform: translateY(-8px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.slide-down-fade { animation: slide-down-fade 200ms ease-out; }
+
+@keyframes shimmer {
+  0% { background-position: -800px 0; }
+  100% { background-position: 800px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #e5e7eb 0px, #f3f4f6 200px, #e5e7eb 400px);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 4px;
+}
+
+@keyframes count-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.count-pulse { animation: count-pulse 300ms ease-out; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+.dark-scroll::-webkit-scrollbar-thumb { background: #2d3a52; }
+
+/* Industrial blueprint grid */
+.blueprint-grid {
+  background-color: #0B131F;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.07) 1px, transparent 1px),
+    linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+/* Status glows */
+@keyframes signal-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+  50% { box-shadow: 0 0 0 6px transparent; opacity: 0.65; }
+}
+.signal-pulse { animation: signal-pulse 2s ease-in-out infinite; }
+
+@keyframes data-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.data-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(225,38,28,0.15), transparent);
+  background-size: 200% 100%;
+  animation: data-shimmer 2.5s linear infinite;
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.radar-sweep { animation: radar-sweep 4s linear infinite; transform-origin: center; }
+
+/* CCTV noise overlay */
+.cctv-noise::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 3px 3px; mix-blend-mode: overlay;
+}
+
+@keyframes vignette-flicker {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+.cctv-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.65) 100%);
+  animation: vignette-flicker 6s ease-in-out infinite;
+}
+
+@keyframes node-throb {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+.node-throb::after {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px;
+  border: 2px solid currentColor; animation: node-throb 2s ease-out infinite;
+}
+
+/* Subtle band for KPIs */
+.industrial-divider {
+  background: linear-gradient(90deg, transparent, rgba(225,38,28,0.5), transparent);
+  height: 1px;
+}
+
+/* Worker dot trails */
+@keyframes worker-walk {
+  0% { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
+}
+.worker-walk { animation: worker-walk 18s linear infinite; }
+
+/* Camera CRT scan line — per-cell */
+@keyframes camScanLine {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+.cam-scanline {
+  position: absolute;
+  left: 0; right: 0; height: 1px;
+  background: rgba(255,255,255,0.08);
+  pointer-events: none;
+  animation: camScanLine 4s linear infinite;
+}
+
+/* Escalated alert badge — pulsing border */
+@keyframes esc-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(194,65,12,0.55); }
+  50% { box-shadow: 0 0 0 4px rgba(194,65,12,0); }
+}
+.esc-pulse { animation: esc-pulse 1.8s ease-in-out infinite; }
+
+/* Hex grid landing background */
+@keyframes hex-breath {
+  0%, 100% { transform: scale(1); opacity: 0.04; }
+  50% { transform: scale(1.02); opacity: 0.06; }
+}
+.hex-breath { animation: hex-breath 8s ease-in-out infinite; }
+
+/* Landing hero — slow float */
+@keyframes hero-float {
+  0%, 100% { transform: perspective(1000px) rotateY(-8deg) rotateX(2deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateY(-8deg) rotateX(2deg) translateY(-8px); }
+}
+.hero-float { animation: hero-float 6s ease-in-out infinite; }
+
