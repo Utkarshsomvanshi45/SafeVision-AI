@@ -71,3 +71,7 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+
+# Vercel ASGI handler
+handler = app
