@@ -3,13 +3,13 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models.models import Camera
-import cv2
 import asyncio
 
 router = APIRouter()
 
 # ── MJPEG async stream from pipeline's shared frame buffer ───────────────────
 async def _mjpeg_stream(camera_name: str):
+    import cv2
     from app.ai.pipeline import latest_frames, _frame_lock
     last_frame_id = None
     while True:

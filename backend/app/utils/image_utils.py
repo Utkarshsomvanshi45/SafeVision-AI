@@ -1,4 +1,3 @@
-import cv2
 import os
 from datetime import datetime
 from pathlib import Path
@@ -6,6 +5,7 @@ from pathlib import Path
 
 def save_snapshot(frame, violation_type: str, camera_name: str) -> str:
     """Save violation frame as JPEG, return file path"""
+    import cv2
     Path("snapshots").mkdir(exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     clean_type = violation_type.replace(" ", "_").lower()
@@ -17,6 +17,7 @@ def save_snapshot(frame, violation_type: str, camera_name: str) -> str:
 
 def draw_boxes(frame, boxes, class_names):
     """Draw bounding boxes on frame"""
+    import cv2
     for box in boxes:
         x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
         cls_id = int(box.cls[0])
