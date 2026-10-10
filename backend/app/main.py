@@ -11,44 +11,11 @@ from app.core.config import settings as app_settings
 from app.auth import routes as auth_routes
 from app.api import websocket_route as ws_routes
 
-# ── Pipeline threads registry ─────────────────────────────────────────────────
-_pipeline_threads: list = []
-
-def _start_pipelines():
-    """Start one pipeline thread per active camera in DB."""
-    import time
-    time.sleep(2)  # Wait for DB to be ready
-    from app.database.database import SessionLocal
-    from app.models.models import Camera
-    from app.ai.pipeline import SafeVisionPipeline
-
-    db = SessionLocal()
-    try:
-        cameras_list = db.query(Camera).filter(Camera.status != "offline").all()
-    finally:
-        db.close()
-
-    for cam in cameras_list:
-        if not cam.rtsp_url:
-            continue
-        pipeline = SafeVisionPipeline(
-            source      = cam.rtsp_url,
-            camera_name = cam.name,
-            zone        = cam.zone or "General Zone",
-        )
-        t = threading.Thread(target=pipeline.run, daemon=True, name=f"pipeline-{cam.name}")
-        t.start()
-        _pipeline_threads.append(t)
-        print(f"🎥 Pipeline started: {cam.name} ({cam.rtsp_url})")
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created")
-    print("✅ SafeVision AI Backend Started")
-    # Start pipelines in background — same process = shared latest_frames dict
-    threading.Thread(target=_start_pipelines, daemon=True).start()
+    print("Database tables created")
+    print("SafeVision AI Backend Started")
     yield
     print("SafeVision AI Backend Shutting Down")
 

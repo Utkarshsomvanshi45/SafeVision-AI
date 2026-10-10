@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     # Database
-    DATABASE_URL: str = "sqlite:///./safevision.db"
+    DATABASE_URL: str
 
     # Security
     SECRET_KEY: str = "safevision-secret-key-change-in-production"
