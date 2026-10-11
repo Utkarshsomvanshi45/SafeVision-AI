@@ -37,7 +37,6 @@ function LandingPage() {
 /* -------------------- Navbar -------------------- */
 function Navbar({ onDemo }: { onDemo: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const NAV = [
     { label: "Home", id: "home" },
@@ -57,12 +56,6 @@ function Navbar({ onDemo }: { onDemo: () => void }) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsLoggedIn(!!localStorage.getItem("token"));
-    }
-  }, []);
 
   return (
     <header className="sticky top-0 z-40 h-16 bg-[#0A0E1A]/95 backdrop-blur-md border-b border-white/[0.08] transition-all">
@@ -91,21 +84,12 @@ function Navbar({ onDemo }: { onDemo: () => void }) {
 
         {/* Action buttons */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {isLoggedIn ? (
-            <Link
-              to="/dashboard"
-              className="inline-flex h-9 items-center px-3.5 sm:px-4 bg-[#E1261C] text-white text-[12.5px] sm:text-[13px] font-medium rounded-md hover:bg-[#c61f17] shadow-sm transition-all"
-            >
-              Dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex h-9 items-center px-3.5 sm:px-4 border border-white/20 text-gray-200 text-[12.5px] sm:text-[13px] font-medium rounded-md hover:bg-white/5 hover:text-white transition-all"
-            >
-              Sign In
-            </Link>
-          )}
+          <Link
+            to="/login"
+            className="inline-flex h-9 items-center px-3.5 sm:px-4 border border-white/20 text-gray-200 text-[12.5px] sm:text-[13px] font-medium rounded-md hover:bg-white/5 hover:text-white transition-all"
+          >
+            Sign In
+          </Link>
 
           <button
             onClick={onDemo}
@@ -141,15 +125,13 @@ function Navbar({ onDemo }: { onDemo: () => void }) {
             ))}
 
             <div className="pt-3 mt-1 border-t border-white/10 flex flex-col gap-2.5">
-              {!isLoggedIn && (
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full h-10 border border-white/20 text-white rounded-md text-[13px] font-medium flex items-center justify-center hover:bg-white/5"
-                >
-                  Sign In
-                </Link>
-              )}
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full h-10 border border-white/20 text-white rounded-md text-[13px] font-medium flex items-center justify-center hover:bg-white/5"
+              >
+                Sign In
+              </Link>
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
