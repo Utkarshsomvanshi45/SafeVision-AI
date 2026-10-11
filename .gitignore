@@ -23,6 +23,7 @@ logs/
 # Build
 dist/
 build/
+.vercel/
 
 # IDE
 .vscode/
