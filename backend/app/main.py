@@ -53,9 +53,12 @@ app.include_router(auth_routes.router, prefix="/api/auth", tags=["Auth"])
 app.include_router(ws_routes.router, tags=["WebSocket"])
 app.include_router(recipients.router, prefix="/api/settings/recipients", tags=["Recipients"])
 
-_snap_dir = os.path.join(os.getcwd(), "snapshots")
+_snap_dir = "/tmp/snapshots" if os.environ.get("VERCEL") else os.path.join(os.getcwd(), "snapshots")
 os.makedirs(_snap_dir, exist_ok=True)
-app.mount("/snapshots", StaticFiles(directory=_snap_dir), name="snapshots")
+try:
+    app.mount("/snapshots", StaticFiles(directory=_snap_dir), name="snapshots")
+except Exception:
+    pass
 
 
 @app.get("/")
