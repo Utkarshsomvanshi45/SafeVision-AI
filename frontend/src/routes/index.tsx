@@ -49,6 +49,13 @@ function Navbar({ onDemo }: { onDemo: () => void }) {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsLoggedIn(!!localStorage.getItem("token"));
+    }
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 h-16 bg-[#0A0E1A]/95 backdrop-blur border-b border-white/[0.08]">
       <div className="h-full max-w-[1440px] mx-auto flex items-center px-6 gap-8">
@@ -64,7 +71,15 @@ function Navbar({ onDemo }: { onDemo: () => void }) {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-3">
-          <Link to="/login" className="hidden sm:inline-flex h-9 items-center px-4 border border-white/30 text-white text-[13px] rounded hover:bg-white/5">Sign In</Link>
+          {isLoggedIn ? (
+            <Link to="/dashboard" className="hidden sm:inline-flex h-9 items-center px-4 bg-[#E1261C] text-white text-[13px] font-medium rounded hover:bg-[#c61f17]">
+              Dashboard
+            </Link>
+          ) : (
+            <Link to="/login" className="hidden sm:inline-flex h-9 items-center px-4 border border-white/30 text-white text-[13px] rounded hover:bg-white/5">
+              Sign In
+            </Link>
+          )}
           <button onClick={onDemo} className="inline-flex h-9 items-center gap-1.5 px-4 bg-[#E1261C] text-white text-[13px] font-medium rounded hover:bg-[#c61f17]">
             Request a Demo <ArrowRight size={14} />
           </button>

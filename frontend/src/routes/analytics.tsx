@@ -4,8 +4,10 @@ import { Area, AreaChart, CartesianGrid, Line, LineChart, ReferenceLine, Respons
 import { useEffect, useState } from "react";
 import { violationsAPI } from "@/lib/api";
 import { toast } from "sonner";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/analytics")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Analytics — SafeVision AI" }] }),
   component: AnalyticsPage,
 });

@@ -4,8 +4,10 @@ import { Grid2x2, Grid3x3, Maximize2, X, RefreshCw } from "lucide-react";
 import { Skeleton } from "@/components/ui-kit";
 import { camerasAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/live")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Live Monitor — SafeVision AI" }] }),
   component: LivePage,
 });

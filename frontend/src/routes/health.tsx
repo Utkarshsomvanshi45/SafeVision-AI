@@ -5,8 +5,10 @@ import { CAMERAS } from "@/lib/data";
 import { Cpu, Activity, HardDrive, Network, Server, AlertTriangle, CheckCircle2, Thermometer } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 import { useEffect, useState } from "react";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/health")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Operational Health — SafeVision AI" }] }),
   component: HealthPage,
 });

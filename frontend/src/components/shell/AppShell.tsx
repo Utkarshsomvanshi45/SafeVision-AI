@@ -1,5 +1,5 @@
 import { Sidebar, Topbar } from "./Sidebar";
-import { Outlet, useRouterState } from "@tanstack/react-router";
+import { Outlet, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { useLiveSimulation } from "@/hooks/useLiveSimulation";
 import { AICopilotPanel } from "@/components/ai/AICopilot";
@@ -10,9 +10,26 @@ import { useEffect, useRef, useState } from "react";
 const STANDALONE_ROUTES = new Set(["/", "/login", "/signup"]);
 
 export function AppShell() {
+  const navigate = useNavigate();
   const path = useRouterState({ select: (r) => r.location.pathname });
   const standalone = STANDALONE_ROUTES.has(path);
-  useLiveSimulation(!standalone);
+
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [hasAuth, setHasAuth] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const token = localStorage.getItem("token");
+    const authed = !!token;
+    setHasAuth(authed);
+    setCheckingAuth(false);
+
+    if (!standalone && !authed) {
+      navigate({ to: "/login" });
+    }
+  }, [path, standalone, navigate]);
+
+  useLiveSimulation(!standalone && hasAuth);
 
   if (standalone) {
     return (
@@ -20,6 +37,17 @@ export function AppShell() {
         <Outlet />
         <Toaster position="top-right" />
       </>
+    );
+  }
+
+  if (checkingAuth || !hasAuth) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-[#0A0E1A] text-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#E1261C] border-t-transparent" />
+          <p className="text-xs text-neutral-400 font-mono tracking-wider uppercase">Authenticating...</p>
+        </div>
+      </div>
     );
   }
 

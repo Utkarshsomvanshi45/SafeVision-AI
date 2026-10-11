@@ -5,8 +5,10 @@ import { toast } from "sonner";
 import { Card, PageHeader, SeverityBadge, StatusBadge, Skeleton } from "@/components/ui-kit";
 import { alertsAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/alerts")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Alert Center — SafeVision AI" }] }),
   component: AlertsPage,
 });

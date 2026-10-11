@@ -6,8 +6,10 @@ import { Donut, PageHeader, SeverityBadge, Skeleton, Sparkline, useMounted } fro
 import { useSentinelStore } from "@/lib/store";
 import { dashboardAPI, violationsAPI } from '@/lib/api';
 import { useWebSocket } from '@/hooks/useWebSocket';
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/dashboard")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Dashboard — SafeVision AI by AMNS" }] }),
   component: Dashboard,
 });

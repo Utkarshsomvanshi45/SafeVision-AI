@@ -4,8 +4,10 @@ import { Card, PageHeader } from "@/components/ui-kit";
 import { FileText, Calendar, BarChart3, ShieldCheck, MonitorPlay, Cpu, Download, Trash2, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 import { BASE_URL } from "@/lib/api";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/reports")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Reports — SafeVision AI" }] }),
   component: ReportsPage,
 });

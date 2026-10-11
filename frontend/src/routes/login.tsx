@@ -28,6 +28,15 @@ function LoginRight() {
   const [password, setPassword] = useState("");
   const [mustChangePw, setMustChangePw] = useState(false);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      if (token) {
+        navigate({ to: "/dashboard" });
+      }
+    }
+  }, [navigate]);
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {

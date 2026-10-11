@@ -5,11 +5,13 @@ import { CAMERAS, USERS, VIOLATION_TYPES } from "@/lib/data";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { settingsAPI, BASE_URL } from "@/lib/api";
+import { requireAuth } from "@/lib/authGuard";
 
 type UserRow = { initials: string; name: string; email: string; role: string; dept: string; lastLogin: string; status: string };
 
 
 export const Route = createFileRoute("/settings")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Settings — SafeVision AI" }] }),
   component: SettingsPage,
 });

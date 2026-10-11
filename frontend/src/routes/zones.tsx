@@ -4,8 +4,10 @@ import { PageHeader, Skeleton } from "@/components/ui-kit";
 import { Plus, Search, X, RefreshCw, Move } from "lucide-react";
 import { toast } from "sonner";
 import { BASE_URL } from "@/lib/api";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/zones")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Zone Control — SafeVision AI" }] }),
   component: ZonesPage,
 });

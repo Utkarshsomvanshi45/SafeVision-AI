@@ -6,8 +6,10 @@ import { formatPct } from "@/lib/format";
 import { toast } from "sonner";
 import { complianceAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/compliance")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "Compliance Review — SafeVision AI" }] }),
   component: CompliancePage,
 });

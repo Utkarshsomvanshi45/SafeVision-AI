@@ -5,8 +5,10 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { violationsAPI } from "@/lib/api";
 import { toast } from "sonner";
+import { requireAuth } from "@/lib/authGuard";
 
 export const Route = createFileRoute("/ppe")({
+  beforeLoad: requireAuth,
   head: () => ({ meta: [{ title: "PPE Compliance — SafeVision AI" }] }),
   component: PPEPage,
 });
