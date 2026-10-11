@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Eye, EyeOff, ShieldCheck, Monitor, Users, BellRing, ArrowRight, KeyRound, Lock } from "lucide-react";
 import { SafeVisionLogo } from "@/assets/SafeVisionLogo";
 import { authAPI, BASE_URL } from '@/lib/api';
