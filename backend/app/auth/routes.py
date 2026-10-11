@@ -94,9 +94,9 @@ def invite_user(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    # Only admin/safety_officer can invite
-    if current_user.role not in ["admin", "safety_officer", "operator"]:
-        raise HTTPException(status_code=403, detail="Not authorized to invite users")
+    # Only admin can invite
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can invite new users")
 
     existing = db.query(User).filter(User.email == data["email"]).first()
     if existing:
@@ -172,6 +172,8 @@ def delete_user(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can delete users")
     if current_user.id == user_id:
         raise HTTPException(status_code=400, detail="Cannot delete your own account")
     user = db.query(User).filter(User.id == user_id).first()
@@ -190,6 +192,8 @@ def update_user(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can update users")
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

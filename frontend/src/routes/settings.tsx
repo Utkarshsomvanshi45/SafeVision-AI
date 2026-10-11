@@ -103,6 +103,11 @@ function CameraSettings() {
 
   // ── Delete camera ────────────────────────────────────────────────────────
   const deleteCamera = async (cam: any) => {
+    const userRole = (() => { try { return JSON.parse(localStorage.getItem('sv_user') || '{}')?.role; } catch { return ''; } })();
+    if (userRole !== "admin") {
+      toast.error("Only administrators can delete cameras");
+      return;
+    }
     if (!confirm(`Remove "${cam.name}"? This cannot be undone.`)) return;
     try {
       await fetch(`${BASE_URL}/api/cameras/${cam.camera_id}`, {
@@ -634,9 +639,11 @@ function UserSettings() {
             <h3 className="font-display font-semibold text-[14px]">Users</h3>
             <p style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{users.length} users total</p>
           </div>
-          <button onClick={() => setShowInvite(true)} className="flex items-center gap-1 px-3 h-8 bg-brand-red text-white rounded text-[12px]">
-            <Plus size={12} /> Invite User
-          </button>
+          {currentUser.role === 'admin' && (
+            <button onClick={() => setShowInvite(true)} className="flex items-center gap-1 px-3 h-8 bg-brand-red text-white rounded text-[12px]">
+              <Plus size={12} /> Invite User
+            </button>
+          )}
         </div>
         <div className="overflow-x-auto">
           {loading ? (
@@ -673,8 +680,7 @@ function UserSettings() {
                       <span style={{ fontSize: 10, color: u.is_active ? "#16A34A" : "#9ca3af" }}>● {u.is_active ? "Active" : "Inactive"}</span>
                     </td>
                     <td style={{ padding: "10px 12px" }}>
-                      {u.email !== currentUser.email && 
-                        (currentUser.role === "operator" || currentUser.role === "safety_officer") && (
+                      {u.email !== currentUser.email && currentUser.role === "admin" && (
                         <button onClick={() => { setConfirmDelete(u.id); setDeleteName(u.name); }}
                           style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af", display: "flex", alignItems: "center" }}
                           onMouseEnter={(e) => (e.currentTarget.style.color = "#E1261C")}

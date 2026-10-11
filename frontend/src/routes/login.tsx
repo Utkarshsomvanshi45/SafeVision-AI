@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { User, Eye, EyeOff, ShieldCheck, Monitor, Users, BellRing, ArrowRight, KeyRound, Lock } from "lucide-react";
+import { User, Eye, EyeOff, ShieldCheck, Monitor, Users, BellRing, ArrowRight, KeyRound, Lock, Sparkles, Cpu } from "lucide-react";
 import { SafeVisionLogo } from "@/assets/SafeVisionLogo";
 import { authAPI, BASE_URL } from '@/lib/api';
 import { toast } from "sonner";
@@ -23,16 +23,42 @@ function LoginRight() {
   const navigate   = useNavigate();
   const [showPw, setShowPw]   = useState(false);
   const [loading, setLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
   const [error, setError]     = useState("");
   const [email, setEmail]     = useState("");
   const [password, setPassword] = useState("");
   const [mustChangePw, setMustChangePw] = useState(false);
+
+  const handleDemoLogin = async () => {
+    setError("");
+    setDemoLoading(true);
+    try {
+      const data = await authAPI.login("demo@safevision.ai", "Demo@123");
+      localStorage.setItem("token", data.access_token);
+      if (data.user) {
+        localStorage.setItem("sv_user", JSON.stringify(data.user));
+      }
+      toast.success("Welcome! Signed in as AI Engineer (Demo Access)");
+      navigate({ to: "/dashboard" });
+    } catch (err: any) {
+      const msg = err?.message || "Failed to sign in with demo account. Please try again.";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setDemoLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("token");
       if (token) {
         navigate({ to: "/dashboard" });
+        return;
+      }
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("demo") === "1" || params.get("demo") === "true") {
+        handleDemoLogin();
       }
     }
   }, [navigate]);
@@ -81,6 +107,75 @@ function LoginRight() {
         </div>
         <h1 className="font-display font-bold text-[26px] text-white text-center mt-7">Welcome Back</h1>
         <p className="text-[13px] text-gray-400 text-center mt-1">Sign in to your SafeVision AI account</p>
+
+        {/* ── Recruiter & Guest Demo Card ─────────────────────────────────── */}
+        <div className="mt-6 p-4 rounded-xl border border-indigo-500/30 bg-gradient-to-b from-[#1a233a] via-[#151c2d] to-[#101624] shadow-[0_8px_24px_rgba(30,41,59,0.5)]">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11.5px] font-semibold text-indigo-300 tracking-wider uppercase">
+                Recruiter & Portfolio Demo
+              </span>
+            </div>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono font-medium border border-indigo-500/30">
+              Role: AI Engineer
+            </span>
+          </div>
+
+          <p className="text-[12px] text-gray-300 leading-relaxed mb-3">
+            Hiring manager or reviewing the project? Explore live computer vision detection, alerts, and analytics in one click (no admin privileges).
+          </p>
+
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading || demoLoading}
+            className="w-full h-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:via-indigo-500 hover:to-violet-500 active:scale-[0.99] text-white font-semibold text-[13px] rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-60"
+          >
+            {demoLoading ? (
+              <>
+                <svg className="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+                <span>Signing in as AI Engineer...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={15} className="text-amber-300 animate-pulse" />
+                <span>Instant Demo Login (1-Click)</span>
+                <ArrowRight size={14} className="text-indigo-200" />
+              </>
+            )}
+          </button>
+
+          <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] text-gray-400">
+            <div className="flex items-center gap-1.5 font-mono text-gray-300">
+              <span>demo@safevision.ai</span>
+              <span className="text-gray-500">·</span>
+              <span>Demo@123</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("demo@safevision.ai");
+                setPassword("Demo@123");
+                toast.info("Demo credentials pre-filled in form");
+              }}
+              className="text-[#E1261C] hover:text-[#ff554b] font-medium text-[11px] hover:underline cursor-pointer"
+            >
+              Fill form
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 my-5">
+          <div className="flex-1 h-px bg-white/10" />
+          <span className="text-[11px] text-gray-500 uppercase tracking-wider">or sign in with credentials</span>
+          <div className="flex-1 h-px bg-white/10" />
+        </div>
 
         <form onSubmit={submit} className="mt-7 space-y-4">
           <div>
