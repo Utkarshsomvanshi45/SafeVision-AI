@@ -127,8 +127,73 @@ export function Sidebar() {
   );
 }
 
+export function MobileSidebar() {
+  const { mobileSidebarOpen, setMobileSidebarOpen, alerts } = useSentinelStore();
+  const openCount = alerts.filter((a) => a.status === "Open").length;
+
+  if (!mobileSidebarOpen) return null;
+
+  return (
+    <div className="md:hidden fixed inset-0 z-50 flex">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        onClick={() => setMobileSidebarOpen(false)}
+      />
+
+      {/* Drawer */}
+      <aside className="relative flex flex-col w-[280px] max-w-[85vw] bg-white h-full shadow-2xl z-10 animate-in slide-in-from-left duration-200">
+        <div className="h-[60px] flex items-center justify-between px-4 border-b border-gray-200">
+          <SafeVisionLogo collapsed={false} variant="light" />
+          <button
+            onClick={() => setMobileSidebarOpen(false)}
+            className="p-1.5 text-gray-500 hover:text-gray-800 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
+            aria-label="Close sidebar"
+          >
+            <ChevronLeft size={20} />
+          </button>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+          {navTop.map((n) => (
+            <div key={n.to} onClick={() => setMobileSidebarOpen(false)}>
+              <NavItem {...n} collapsed={false} />
+            </div>
+          ))}
+          <SectionLabel label="Safety Operations" collapsed={false} />
+          {navSafety.map((n) => (
+            <div key={n.to} onClick={() => setMobileSidebarOpen(false)}>
+              <NavItem
+                {...n}
+                collapsed={false}
+                badgeCount={(n as any).badge ? openCount : undefined}
+              />
+            </div>
+          ))}
+          <SectionLabel label="Intelligence" collapsed={false} />
+          {navIntel.map((n) => (
+            <div key={n.to} onClick={() => setMobileSidebarOpen(false)}>
+              <NavItem {...n} collapsed={false} />
+            </div>
+          ))}
+          <SectionLabel label="System" collapsed={false} />
+          {navSys.map((n) => (
+            <div key={n.to} onClick={() => setMobileSidebarOpen(false)}>
+              <NavItem {...n} collapsed={false} />
+            </div>
+          ))}
+        </nav>
+
+        <div onClick={() => setMobileSidebarOpen(false)}>
+          <SidebarUserRow collapsed={false} />
+        </div>
+      </aside>
+    </div>
+  );
+}
+
 export function Topbar() {
-  const { alerts, toggleSidebar, camerasOnline, camerasTotal } = useSentinelStore();
+  const { alerts, toggleSidebar, toggleMobileSidebar, camerasOnline, camerasTotal } = useSentinelStore();
   const [opsOnline, setOpsOnline] = useState(0);
 
   useEffect(() => {
@@ -210,20 +275,27 @@ export function Topbar() {
 
   return (
     <header style={{ background: "#ffffff", borderBottom: "1px solid #e5e7eb", position: "sticky", top: 0, zIndex: 30 }}>
-      <div style={{ height: 60, display: "flex", alignItems: "center", padding: "0 16px", gap: 12 }}>
+      <div style={{ height: 60, display: "flex", alignItems: "center", padding: "0 12px sm:padding 0 16px", gap: 10 }}>
         {/* Mobile menu */}
-        <button onClick={toggleSidebar}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "#6b7280", padding: 8, display: "flex", alignItems: "center" }}
-          className="md:hidden">
-          <Menu size={18} />
+        <button
+          onClick={toggleMobileSidebar}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#4b5563", padding: 6, display: "flex", alignItems: "center" }}
+          className="md:hidden"
+          aria-label="Open navigation menu"
+        >
+          <Menu size={20} />
         </button>
 
-        {/* Plant info */}
-        <div className="hidden md:flex" style={{ alignItems: "center", gap: 12 }}>
-          <div style={{ width: 4, height: 28, borderRadius: 2, background: "#E1261C" }} />
+        {/* Plant info — visible on both mobile and desktop */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 4, height: 26, borderRadius: 2, background: "#E1261C" }} />
           <div>
-            <div style={{ fontSize: 12.5, fontWeight: 600, color: "#111827", lineHeight: 1.3 }}>AM/NS India — {plantName}</div>
-            <div style={{ fontSize: 10, fontFamily: "IBM Plex Mono", color: "#9ca3af" }}>Sector A-7 · IST · {crumb}</div>
+            <div style={{ fontSize: 12.5, fontWeight: 600, color: "#111827", lineHeight: 1.25 }}>
+              <span className="hidden sm:inline">AM/NS India — </span>{plantName}
+            </div>
+            <div style={{ fontSize: 9.5, fontFamily: "IBM Plex Mono", color: "#9ca3af" }} className="hidden xs:block">
+              Sector A-7 · IST · {crumb}
+            </div>
           </div>
         </div>
 

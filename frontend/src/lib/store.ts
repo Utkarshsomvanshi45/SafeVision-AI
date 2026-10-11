@@ -7,6 +7,7 @@ interface SentinelState {
   lastDetectionSec: number;
   framesAnalyzed: number;
   sidebarCollapsed: boolean;
+  mobileSidebarOpen: boolean;
   aiNodes: AINode[];
   gpuAvg: number;
   latencyMs: number;
@@ -24,6 +25,8 @@ interface SentinelState {
   tickDetectionTimer: () => void;
   tickTelemetry: () => void;
   toggleSidebar: () => void;
+  setMobileSidebarOpen: (v: boolean) => void;
+  toggleMobileSidebar: () => void;
   setCopilotOpen: (v: boolean) => void;
   setCamerasOnline: (online: number, total: number) => void;
 }
@@ -38,6 +41,7 @@ export const useSentinelStore = create<SentinelState>((set) => ({
   lastDetectionSec: 0,
   framesAnalyzed: 0,   // ← starts at 0
   sidebarCollapsed: false,
+  mobileSidebarOpen: false,
   aiNodes: AI_NODES,
   gpuAvg: 62,
   latencyMs: 38,
@@ -109,6 +113,11 @@ export const useSentinelStore = create<SentinelState>((set) => ({
 
   toggleSidebar: () =>
     set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+
+  setMobileSidebarOpen: (v) => set({ mobileSidebarOpen: v }),
+
+  toggleMobileSidebar: () =>
+    set((s) => ({ mobileSidebarOpen: !s.mobileSidebarOpen })),
 
   setCopilotOpen: (v) => set({ copilotOpen: v }),
 

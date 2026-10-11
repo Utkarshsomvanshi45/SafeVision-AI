@@ -99,8 +99,8 @@ function LoginRight() {
   }
 
   return (
-    <div className="bg-[#111827] flex items-center justify-center p-6 lg:p-12">
-      <div className="w-full max-w-[440px] bg-[#1C2333] border border-[#2D3A52] rounded-2xl p-8 lg:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.4)]">
+    <div className="bg-[#111827] flex items-center justify-center p-4 sm:p-6 lg:p-12 min-h-screen lg:min-h-0">
+      <div className="w-full max-w-[440px] bg-[#1C2333] border border-[#2D3A52] rounded-2xl p-5 sm:p-8 lg:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.4)]">
         <div className="flex flex-col items-center">
           <SafeVisionLogo />
           <div className="text-[10px] tracking-[0.25em] text-gray-500 mt-2 font-semibold">BY AMNS</div>
@@ -427,7 +427,7 @@ export function AuthLeftPanel() {
     { icon: BellRing,    t: "Instant Alerts",        d: "Get instant alerts and take quick action to keep everyone safe." },
   ];
   return (
-    <div className="relative bg-[#0A0E1A] p-8 lg:p-12 flex flex-col overflow-hidden">
+    <div className="hidden lg:flex relative bg-[#0A0E1A] p-8 lg:p-12 flex-col overflow-hidden">
       <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ backgroundImage: "radial-gradient(ellipse at 30% 70%, rgba(225,38,28,0.25), transparent 55%)" }} />
       <div className="relative">
         <div className="flex items-center gap-3">

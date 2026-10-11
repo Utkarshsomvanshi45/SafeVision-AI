@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import "../styles.css";
 import { AppShell } from "@/components/shell/AppShell";
 
 function NotFoundComponent() {
@@ -72,9 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" },
+      { name: "theme-color", content: "#0A0E1A" },
       { title: "SafeVision AI by AMNS — Industrial Safety Intelligence" },
-      { name: "description", content: "AI-powered industrial safety monitoring for AM/NS India AM/NS India — Talegaon." },
+      { name: "description", content: "AI-powered industrial safety monitoring for AM/NS India — Talegaon." },
       { name: "author", content: "ArcelorMittal Nippon Steel India" },
       { property: "og:title", content: "SafeVision AI by AMNS" },
       { property: "og:description", content: "Industrial Safety Intelligence — Powered by AI" },
@@ -100,11 +102,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html, body {
+                background-color: #0A0E1A !important;
+                color: #F9FAFB !important;
+                font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                min-height: 100%;
+                overflow-x: hidden;
+                -webkit-font-smoothing: antialiased;
+                -webkit-tap-highlight-color: transparent;
+              }
+              * {
+                box-sizing: border-box;
+              }
+            `,
+          }}
+        />
       </head>
-      <body>
+      <body className="bg-[#0A0E1A] text-white antialiased overflow-x-hidden min-h-screen">
         {children}
         <Scripts />
       </body>

@@ -1,4 +1,4 @@
-import { Sidebar, Topbar } from "./Sidebar";
+import { Sidebar, Topbar, MobileSidebar } from "./Sidebar";
 import { Outlet, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { useLiveSimulation } from "@/hooks/useLiveSimulation";
@@ -54,6 +54,7 @@ export function AppShell() {
   return (
     <div className="flex h-screen w-full bg-bg-canvas overflow-hidden">
       <Sidebar />
+      <MobileSidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar />
         <main className="flex-1 overflow-y-auto">
