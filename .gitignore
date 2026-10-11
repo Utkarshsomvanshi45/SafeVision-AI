@@ -12,6 +12,7 @@ node_modules/
 
 # Database
 *.db
+*.sql
 
 # YOLO weights
 *.pt

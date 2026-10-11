@@ -1,4 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+    ? 'https://safe-vision-ai-xi.vercel.app'
+    : 'http://localhost:8000')
 
 // SSR pe localStorage nahi hota
 const getToken = () => {
