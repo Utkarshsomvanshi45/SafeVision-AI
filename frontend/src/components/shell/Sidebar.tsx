@@ -9,6 +9,7 @@ import { SafeVisionLogo } from "@/assets/SafeVisionLogo";
 import { useSentinelStore } from "@/lib/store";
 import { OPERATORS_ONLINE } from "@/lib/data";
 import { useEffect, useState } from "react";
+import { BASE_URL } from "@/lib/api";
 
 
 // ── Helper: get logged-in user from localStorage ────────────────────────────
@@ -131,7 +132,7 @@ export function Topbar() {
   const [opsOnline, setOpsOnline] = useState(0);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/auth/users', {
+    fetch(`${BASE_URL}/api/auth/users`, {
       headers: { Authorization: `Bearer ${typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : ""}` }
     })
       .then((r) => r.ok ? r.json() : Promise.reject())

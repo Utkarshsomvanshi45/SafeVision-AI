@@ -4,7 +4,7 @@ import { Card, PageHeader, Skeleton } from "@/components/ui-kit";
 import { CAMERAS, USERS, VIOLATION_TYPES } from "@/lib/data";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-import { settingsAPI } from "@/lib/api";
+import { settingsAPI, BASE_URL } from "@/lib/api";
 
 type UserRow = { initials: string; name: string; email: string; role: string; dept: string; lastLogin: string; status: string };
 
@@ -67,7 +67,7 @@ function CameraSettings() {
   });
 
   const token = () => localStorage.getItem("token") || "";
-  const API   = "http://localhost:8000/api/cameras/";
+  const API   = `${BASE_URL}/api/cameras/`;
 
   // ── Fetch cameras ────────────────────────────────────────────────────────
   const fetchCameras = useCallback(async () => {
@@ -87,7 +87,7 @@ function CameraSettings() {
     const newAI     = newStatus === "online";
     setCameras((prev) => prev.map((c) => c.camera_id === cam.camera_id ? { ...c, status: newStatus, is_ai_active: newAI } : c));
     try {
-      await fetch(`http://localhost:8000/api/cameras/${cam.camera_id}`, {
+      await fetch(`${BASE_URL}/api/cameras/${cam.camera_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
         body: JSON.stringify({ status: newStatus, is_ai_active: newAI }),
@@ -103,7 +103,7 @@ function CameraSettings() {
   const deleteCamera = async (cam: any) => {
     if (!confirm(`Remove "${cam.name}"? This cannot be undone.`)) return;
     try {
-      await fetch(`http://localhost:8000/api/cameras/${cam.camera_id}`, {
+      await fetch(`${BASE_URL}/api/cameras/${cam.camera_id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token()}` },
       });
@@ -580,7 +580,7 @@ function UserSettings() {
   const fetchUsers = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8000/api/auth/users', {
+      const res = await fetch(`${BASE_URL}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed');
@@ -595,7 +595,7 @@ function UserSettings() {
   const deleteUser = async (id: number, name: string) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:8000/api/auth/users/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/auth/users/${id}`, {
         method: 'DELETE', headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) {
@@ -727,7 +727,7 @@ function InviteUserDrawer({ onClose, onSuccess }: { onClose: () => void; onSucce
     setSaving(true); setError("");
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8000/api/auth/invite', {
+      const res = await fetch(`${BASE_URL}/api/auth/invite`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ name, email, role, department: dept }),
@@ -791,7 +791,7 @@ function NotificationSettings() {
   const [newType, setNewType]       = useState("all");
 
   const getToken = () => localStorage.getItem("token") || "";
-  const API = "http://localhost:8000/api/settings/recipients";
+  const API = `${BASE_URL}/api/settings/recipients`;
 
   const fetchRecipients = useCallback(async () => {
     try {
@@ -836,7 +836,7 @@ function NotificationSettings() {
     if (!active.length) { toast.error("No active recipients — enable at least one first"); return; }
     setSending(true);
     try {
-      await fetch("http://localhost:8000/api/settings/test-alert", { method: "POST", headers: { Authorization: `Bearer ${getToken()}` } });
+      await fetch(`${BASE_URL}/api/settings/test-alert`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` } });
       toast.success(`✓ Test alert sent to ${active.length} recipient${active.length > 1 ? "s" : ""}`);
     } catch { toast.error("Test failed"); }
     finally { setSending(false); }
@@ -971,7 +971,7 @@ function SecuritySettings() {
     setSaving(true);
     try {
       const token = localStorage.getItem("token") || "";
-      const res = await fetch("http://localhost:8000/api/auth/change-password", {
+      const res = await fetch(`${BASE_URL}/api/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ current_password: currPw, new_password: newPw }),

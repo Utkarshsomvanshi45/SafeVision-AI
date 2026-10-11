@@ -1,4 +1,4 @@
-const BASE_URL =
+export const BASE_URL =
   import.meta.env.VITE_API_URL ||
   (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
     ? 'https://safe-vision-ai-xi.vercel.app'

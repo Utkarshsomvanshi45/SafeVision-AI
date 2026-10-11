@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, PageHeader } from "@/components/ui-kit";
 import { FileText, Calendar, BarChart3, ShieldCheck, MonitorPlay, Cpu, Download, Trash2, Plus, X } from "lucide-react";
 import { toast } from "sonner";
+import { BASE_URL } from "@/lib/api";
 
 export const Route = createFileRoute("/reports")({
   head: () => ({ meta: [{ title: "Reports — SafeVision AI" }] }),
@@ -26,7 +27,7 @@ const INITIAL_SCHEDULED: Schedule[] = [
   { id: 2, name: "Weekly Compliance", schedule: "Mon 08:00",   recipients: "All HSE managers" },
 ];
 
-const BASE     = "http://localhost:8000";
+const BASE     = BASE_URL;
 const authFetch = (url: string) =>
   fetch(`${BASE}${url}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` } }).then((r) => r.json());
 

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Grid2x2, Grid3x3, Maximize2, X, RefreshCw } from "lucide-react";
 import { Skeleton } from "@/components/ui-kit";
-import { camerasAPI } from "@/lib/api";
+import { camerasAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
 
 export const Route = createFileRoute("/live")({
@@ -199,7 +199,7 @@ function CameraCell({ cam, time, overlays, onExpand }: { cam: Camera; time: stri
 function LiveFeed({ cam }: { cam: Camera }) {
   const [err, setErr] = useState(false);
   const token = localStorage.getItem('token') ?? '';
-  const src = `http://localhost:8000/api/cameras/stream/${cam.camera_id}`;
+  const src = `${BASE_URL}/api/cameras/stream/${cam.camera_id}`;
 
   if (err) return <FauxFeed />;   // fallback if stream fails
 

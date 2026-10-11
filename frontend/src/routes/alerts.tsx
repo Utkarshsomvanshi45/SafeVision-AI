@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { X, Search, Download, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Card, PageHeader, SeverityBadge, StatusBadge, Skeleton } from "@/components/ui-kit";
-import { alertsAPI } from "@/lib/api";
+import { alertsAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
 
 export const Route = createFileRoute("/alerts")({
@@ -324,7 +324,7 @@ function AlertDrawer({ alert, onClose, onUpdate }: { alert: Alert; onClose: () =
 
   useEffect(() => {
     // Fetch real users from backend
-    fetch('http://localhost:8000/api/auth/users', {
+    fetch(`${BASE_URL}/api/auth/users`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token') ?? ''}` }
     })
       .then((r) => r.ok ? r.json() : Promise.reject())

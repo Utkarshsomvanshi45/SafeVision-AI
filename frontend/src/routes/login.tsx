@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { User, Eye, EyeOff, ShieldCheck, Monitor, Users, BellRing, ArrowRight, KeyRound, Lock } from "lucide-react";
 import { SafeVisionLogo } from "@/assets/SafeVisionLogo";
-import { authAPI } from '@/lib/api';
+import { authAPI, BASE_URL } from '@/lib/api';
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
@@ -179,7 +179,7 @@ function ForceChangePassword({ onSuccess }: { onSuccess: () => void }) {
     setError(""); setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8000/api/auth/change-password", {
+      const res = await fetch(`${BASE_URL}/api/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ current_password: current, new_password: newPw }),

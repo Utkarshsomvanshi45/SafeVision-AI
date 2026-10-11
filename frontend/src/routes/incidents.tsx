@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Card, PageHeader, SeverityBadge, Skeleton } from "@/components/ui-kit";
-import { alertsAPI } from "@/lib/api";
+import { alertsAPI, BASE_URL } from "@/lib/api";
 import { Play, Pause, Search } from "lucide-react";
 import { toast } from "sonner";
 
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/incidents")({
   component: IncidentsPage,
 });
 
-const SNAP_BASE = "http://localhost:8000/snapshots/";
+const SNAP_BASE = `${BASE_URL}/snapshots/`;
 
 function IncidentsPage() {
   const [alerts, setAlerts] = useState<any[]>([]);

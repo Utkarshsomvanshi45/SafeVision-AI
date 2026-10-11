@@ -3,13 +3,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHeader, Skeleton } from "@/components/ui-kit";
 import { Plus, Search, X, RefreshCw, Move } from "lucide-react";
 import { toast } from "sonner";
+import { BASE_URL } from "@/lib/api";
 
 export const Route = createFileRoute("/zones")({
   head: () => ({ meta: [{ title: "Zone Control — SafeVision AI" }] }),
   component: ZonesPage,
 });
 
-const BASE     = "http://localhost:8000";
+const BASE     = BASE_URL;
 const authHdr  = () => ({ Authorization: `Bearer ${localStorage.getItem("token") || ""}` });
 const apiFetch = (url: string) => fetch(`${BASE}${url}`, { headers: authHdr() }).then((r) => r.json());
 

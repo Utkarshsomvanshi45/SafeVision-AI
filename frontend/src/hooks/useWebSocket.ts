@@ -1,6 +1,10 @@
 import { useEffect, useRef, useCallback } from 'react'
 
-const WS_URL = 'ws://localhost:8000/ws'
+const WS_URL =
+  import.meta.env.VITE_WS_URL ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+    ? 'wss://safe-vision-ai-xi.vercel.app/ws'
+    : 'ws://localhost:8000/ws')
 
 // ── Singleton WebSocket — ek hi connection puri app ke liye ──────────────────
 let globalWs: WebSocket | null = null

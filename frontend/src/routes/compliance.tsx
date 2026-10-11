@@ -4,15 +4,13 @@ import { CheckCircle2, X, Filter, Calendar, RefreshCw, Trash2 } from "lucide-rea
 import { Card, PageHeader, Skeleton } from "@/components/ui-kit";
 import { formatPct } from "@/lib/format";
 import { toast } from "sonner";
-import { complianceAPI } from "@/lib/api";
+import { complianceAPI, BASE_URL } from "@/lib/api";
 import { useWebSocket } from "@/hooks/useWebSocket";
 
 export const Route = createFileRoute("/compliance")({
   head: () => ({ meta: [{ title: "Compliance Review — SafeVision AI" }] }),
   component: CompliancePage,
 });
-
-const BASE_URL = 'http://localhost:8000';
 
 const VIOLATION_TYPES = [
   "All Violations","Work At Height","Safety Jacket Missing","Helmet Not Worn",
